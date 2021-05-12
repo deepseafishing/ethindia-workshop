@@ -8,9 +8,9 @@
           </div>
           <div class="modal-body">
             <slot name="body">
-              <h3>Title: {{propData.name}}</h3>
-              <h3>Price: {{propData.price}}</h3>
-              <p>Description: {{propData.description}}</p>
+              <h3>Title: {{ propData.name }}</h3>
+              <h3>Price: {{ propData.price }}</h3>
+              <p>Description: {{ propData.description }}</p>
               <div class="row ml-4 p-2">
                 <datepicker :value="startDate" v-model="startDate"></datepicker>
                 <datepicker v-model="endDate"></datepicker>
@@ -27,13 +27,13 @@
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker';
+import Datepicker from "vuejs-datepicker";
 
 import { bookProperty, web3 } from "~/plugins/utils";
 
 export default {
   components: {
-    Datepicker
+    Datepicker,
   },
   props: ["propData"],
   data() {
@@ -48,21 +48,26 @@ export default {
     getDayOfYear(date) {
       var now = new Date(date);
       var start = new Date(now.getFullYear(), 0, 0);
-      var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+      var diff =
+        now -
+        start +
+        (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
       var oneDay = 1000 * 60 * 60 * 24;
       var day = Math.floor(diff / oneDay);
-      return day
+      return day;
     },
     book() {
       // get Start date
-
+      const startDay = this.getDayOfYear(this.startDate);
       // get End date
-
+      const endDay = this.getDayOfYear(this.endDate);
       // price calculation
-
-      // call metamask.bookProperty
-    }
-  }
+      const totalPrice =
+        web3().utils.toWei(this.propData.price, "ether") * (endDay - startDay);
+      // call utils.bookProperty
+      bookProperty(this.propData.id, startDay, endDay, totalPrice);
+    },
+  },
 };
 </script>
 

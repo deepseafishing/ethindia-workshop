@@ -3,7 +3,7 @@
     <div>
       <h1 class="title">ETHIndia Workshop</h1>
       <!-- <h6 class="subtitle">Places to stay around the world</h6> -->
-      
+
       <div class="row">
         <div class="m-3" v-for="post in posts">
           <card :propObject="post" key="post.id" />
@@ -15,29 +15,30 @@
 
 <script>
 import card from "~/components/card.vue";
-import { fetchAllProperties, setProvider } from "~/plugins/utils"
-import { sampleTx } from "~/plugins/walletConnect"
+import { fetchAllProperties, setProvider } from "~/plugins/utils";
+import { sampleTx } from "~/plugins/walletConnect";
 
 export default {
   components: {
-    card
+    card,
   },
   async mounted() {
     // init Metamask
-
+    await setProvider();
     // fetch all properties
+    const properties = await fetchAllProperties();
+    this.posts = properties;
   },
   data() {
     return {
-      posts: [
-      ]
+      posts: [],
     };
   },
   methods: {
     async sendTx() {
-      await sampleTx()
-    }
-  }
+      await sampleTx();
+    },
+  },
 };
 </script>
 

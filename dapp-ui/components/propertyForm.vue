@@ -9,35 +9,37 @@
 
           <div class="modal-body">
             <slot name="body">
-                <div class="form-group">
-                  <label for="title">Title</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="title"
-                    placeholder="Enter Title"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="description">Description</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="description"
-                    placeholder="Description"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="price">Price</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="price"
-                    placeholder="Price"
-                  />
-                </div>
-                <button v-on:click="postAd" class="btn btn-primary float-right">Submit</button>
-                <!-- <button class="btn btn-outline-secondary float-right mr-3" v-on:click="close">Cancel</button> -->
+              <div class="form-group">
+                <label for="title">Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="title"
+                  placeholder="Enter Title"
+                />
+              </div>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="description"
+                  placeholder="Description"
+                />
+              </div>
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model="price"
+                  placeholder="Price"
+                />
+              </div>
+              <button v-on:click="postAd" class="btn btn-primary float-right">
+                Submit
+              </button>
+              <!-- <button class="btn btn-outline-secondary float-right mr-3" v-on:click="close">Cancel</button> -->
             </slot>
           </div>
         </div>
@@ -53,19 +55,19 @@ export default {
   components: {},
   data() {
     return {
-      title: '',
-      description: '',
-      price: '',
-    }
+      title: "",
+      description: "",
+      price: "",
+    };
   },
   methods: {
     postAd() {
       // convert price from ETH to Wei
-
-      // call metamask.postProperty
-      
-    }
-  }
+      const weiValue = web3().utils.toWei(this.price, "ether");
+      // call utils.postProperty
+      postProperty(this.title, this.description, weiValue);
+    },
+  },
 };
 </script>
 
