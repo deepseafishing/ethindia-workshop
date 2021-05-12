@@ -1,5 +1,5 @@
 {
-  "abi":  [
+  "abi": [
     {
       "constant": false,
       "inputs": [
@@ -89,6 +89,20 @@
     },
     {
       "constant": true,
+      "inputs": [],
+      "name": "bookingId",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
       "inputs": [
         {
           "name": "",
@@ -147,6 +161,20 @@
         {
           "name": "owner",
           "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "propertyId",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
         }
       ],
       "payable": false,
