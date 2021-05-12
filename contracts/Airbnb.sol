@@ -2,6 +2,18 @@ pragma solidity ^0.5.7;
 
 contract Airbnb {
   // INSERT struct Property
+  struct Property{
+  string name;
+  string description;
+  bool isActive;      // is property active
+  uint256 price;      // per day price in wei (1 ether = 10^18 wei)
+  address owner;      // Owner of the property
+  // Is the property booked on a particular day,
+  // For the sake of simplicity, we assign 0 to Jan 1, 1 to Jan 2 and so on
+  // so isBooked[31] will denote whether the property is booked for Feb 1
+  bool[] isBooked;
+  }
+
 
   // Unique and sequential propertyId for every new property
   uint256 public propertyId;
@@ -10,7 +22,13 @@ contract Airbnb {
   mapping(uint256 => Property) public properties;
 
   // INSERT struct Booking
-
+  struct Booking {
+  uint256 propertyId;
+  uint256 checkInDate;
+  uint256 checkoutDate;
+  address user;
+  }
+  
   uint256 public bookingId;
 
   // mapping of bookingId to Booking object
