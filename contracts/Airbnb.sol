@@ -28,7 +28,7 @@ contract Airbnb {
   uint256 checkoutDate;
   address user;
   }
-  
+
   uint256 public bookingId;
 
   // mapping of bookingId to Booking object
@@ -53,10 +53,14 @@ contract Airbnb {
     */
   function rentOutproperty(string memory name, string memory description, uint256 price) public {
     // create a property object
+    Property memory property = Property(name, description, true /* isActive */, price, msg.sender /* owner */, new bool[](365));
 
     // Persist `property` object to the "permanent" storage
+    properties[propertyId] = property;
 
     // emit an event to notify the clients
+    emit NewProperty(propertyId++);
+    
   }
 
   /**
@@ -67,11 +71,20 @@ contract Airbnb {
    */
   function rentProperty(uint256 _propertyId, uint256 checkInDate, uint256 checkoutDate) public payable {
     // Retrieve `property` object from the storage
+    Property storage property = properties[_propertyId];
 
     // Assert that property is active
-
+    require(
+      property.isActive == true,
+      "property with this ID is not active"
+    );
     // Assert that property is available for the dates
-
+    for (uint256 i = checkInDate; i < checkoutDate; i++) {
+      if (property.isBooked[i] == true) {
+        // if property is booked on a day, revert the transaction
+        revert("property is not available for the selected dates");
+      }
+    }
     // Check the customer has sent an amount equal to (pricePerDay * numberOfDays)
 
     // send funds to the owner of the property
@@ -89,14 +102,20 @@ contract Airbnb {
 
   function _createBooking(uint256 _propertyId, uint256 checkInDate, uint256 checkoutDate) internal {
     // Create a new booking object
+    bookings[bookingId] = Booking(_propertyId, checkInDate, checkoutDate, msg.sender);
 
     // persist to storage
 
     // Retrieve `property` object from the storage
+    Property storage property = properties[_propertyId];
 
     // Mark the property booked on the requested dates
-
+    for (uint256 i = checkInDate; i < checkoutDate; i++) {
+      property.isBooked[i] = true;
+    }
     // Emit an event to notify clients
+    emit NewBooking(_propertyId, bookingId++);
+
   }
 
   /**
